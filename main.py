@@ -48,7 +48,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
         now_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
         final_pic_file = os.path.join(host_dir, f"{now_time}.png")
-        final_hash_file = os.path.join(host_dir, f"{i_hash}.png")
+        final_lastest_file = os.path.join(host_dir, "lastest.png")
 
         total_height = driver.execute_script("""
             return Math.max(
@@ -71,11 +71,11 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 })
                 res = driver.execute_cdp_cmd('Page.captureScreenshot', {'fromSurface': True})
                 img_data = base64.b64decode(res['data'])
-                with open(final_pic_file, 'wb') as f:
+                # with open(final_pic_file, 'wb') as f:
+                #     f.write(img_data)
+                with open(final_lastest_file, 'wb') as f:
                     f.write(img_data)
-                with open(final_hash_file, 'wb') as f:
-                    f.write(img_data)
-                return final_pic_file, final_hash_file
+                return final_pic_file, final_lastest_file
 
             if full_page == 1:
                 print("｜！！！！！｜采用拉高视窗截图模式")
@@ -85,8 +85,8 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 print("｜！！！！！｜不进行任何滚动，直接截图")
 
             driver.save_screenshot(final_pic_file)
-            driver.save_screenshot(final_hash_file)
-            return final_pic_file, final_hash_file
+            driver.save_screenshot(final_lastest_file)
+            return final_pic_file, final_lastest_file
 
         print("｜！！！！！｜采用滚动截图模式")
         scrolled_height = 0
@@ -124,9 +124,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             stitched_image.paste(img, (0, i * height))
 
         stitched_image.save(final_pic_file)
-        stitched_image.save(final_hash_file)
+        stitched_image.save(final_lastest_file)
         print("截图成功")
-        return final_pic_file, final_hash_file
+        return final_pic_file, final_lastest_file
     
     except Exception as e:
         print(f"发生错误: {e}")
@@ -179,47 +179,4 @@ if __name__ == "__main__":
         host_dir = os.path.join("save", host)
         if not os.path.exists(host_dir):
             os.mkdir(host_dir)
-        final_pic_file, final_hash_file = get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash)
-
-        # result_file = os.path.join("save", 'result.json')
-
-        # # 检查文件是否存在
-        # try:
-        #     with open(result_file, 'r') as f:
-        #         # 如果存在，读取数据
-        #         result = json.load(f)
-        # except FileNotFoundError:
-        #     # 如果不存在，创建文件并写入数据
-        #     result = {}
-
-        # if host not in result["sites"]:
-        #     result["data"].append({
-        #         "site": host,
-        #         "data":[],
-        #         "rules": [],
-        #         "lasted": "",
-        #         "raw_lasted": "",
-        #     })
-        #     result["sites"].append(host)
-        # else:
-        #     # 找到对应的 host 是第几个索引
-        #     index = result["sites"].index(host)
-        # result["data"][index]["lasted"] = final_hash_file
-        # result["data"][index]["raw_lasted"] = final_pic_file
-
-        # if i_hash not in result["data"][index]["rules"]:
-        #     result["data"][index]["data"].append({
-        #         "data": [final_pic_file],
-        #         "lasted": final_hash_file,
-        #         "details": i,
-        #         "rule": i_hash,
-        #     })
-        #     result["data"][index]["rules"].append(i_hash)
-        # else:
-        #     _index = result["data"][index]["rules"].index(i_hash)
-        #     result["data"][index]["data"][_index]["data"].append(final_pic_file)
-        #     result["data"][index]["data"][_index]["lasted"] = final_hash_file
-
-        # # 将更新后的 result 写入文件
-        # with open(result_file, 'w') as f:
-        #     json.dump(result, f, indent=4)
+        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash)
