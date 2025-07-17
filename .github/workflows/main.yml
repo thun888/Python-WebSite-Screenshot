@@ -4,7 +4,7 @@ name: selenium
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 6 * * *'  
+    - cron:  '0 6 1,7,13,19,25 * *'  
   # Triggers the workflow on push or pull request events but only for the main branch
 
   # Allows you to run this workflow manually from the Actions tab
@@ -39,9 +39,15 @@ jobs:
           LANG="zh_CN.UTF-8"
           cp font/HarmonyOS.ttf /usr/share/fonts/
           sudo chmod 644 /usr/share/fonts/HarmonyOS.ttf
-          curl -L https://github.com/thun888/Python-WebSite-Screenshot/releases/download/front_asset_250717/windows_fonts.zip -o /usr/share/fonts/windows_fonts.zip
+          curl -L https://github.com/thun888/Python-WebSite-Screenshot/releases/download/font_asset/apple_fonts.zip -o /usr/share/fonts/apple_fonts.zip
+          curl -L https://github.com/thun888/Python-WebSite-Screenshot/releases/download/font_asset/windows_fonts.zip -o /usr/share/fonts/windows_fonts.zip
+          # curl -L https://github.com/thun888/Python-WebSite-Screenshot/releases/download/font_asset/apple_fonts_test.zip -o /usr/share/fonts/apple_fonts_test.zip
           unzip /usr/share/fonts/windows_fonts.zip -d /usr/share/fonts/
           rm /usr/share/fonts/windows_fonts.zip
+          unzip /usr/share/fonts/apple_fonts.zip -d /usr/share/fonts/
+          rm /usr/share/fonts/apple_fonts.zip
+          # unzip /usr/share/fonts/apple_fonts_test.zip -d /usr/share/fonts/
+          # rm /usr/share/fonts/apple_fonts_test.zip
           # curl -L https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.520/LXGWWenKaiScreen.ttf -o /usr/share/fonts/LXGWWenKaiScreen.ttf
           # curl -L https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.520/LXGWWenKaiMonoScreen.ttf -o /usr/share/fonts/LXGWWenKaiMonoScreen.ttf
           # curl -L https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.520/LXGWWenKaiMonoGBScreen.ttf -o /usr/share/fonts/LXGWWenKaiMonoGBScreen.ttf
@@ -80,7 +86,7 @@ jobs:
          
       - name: Commit and push to page branch
         run: |
-          cp ./page/404.html save/
+          cp -r ./page/ save/
           cd save
           git init
           git config user.name "github-actions[bot]"
