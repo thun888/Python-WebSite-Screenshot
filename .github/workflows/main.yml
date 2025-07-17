@@ -54,31 +54,31 @@ jobs:
             && sudo mv chromedriver /usr/local/bin/chromedriver \
             && sudo chmod +x /usr/local/bin/chromedriver \
             && chromedriver --version
+      
       - name: 'Install requirements'
         run: pip install -r ./requirements.txt
 
       - name: 'ALL IN ONE'
         run: python ./main.py
 
-      - name: 'DELETE DAYDEL FILES'
-        run: python ./del.py
+      # - name: 'DELETE DAYDEL FILES'
+        # run: python ./del.py
 
-      - name: 'RELOAD DAYDEL FILES'
-        run: python ./reload.py
-
-      - name: Commit ALL IN ONE files
-        run: |
-          git config --local user.email "admin@icodeq.com"
-          git config --local user.name "zkeq"
-          git checkout --orphan latest_branch
-          git add -A
-          git commit -m "GitHub Actions Crawler ALL IN ONE at $(date +'%Y-%m-%d %H:%M:%S')"
-          git branch -D master
-          git branch -m master
+      # - name: 'RELOAD DAYDEL FILES'
+        # run: python ./reload.py
          
-      - name: Push changes
-        uses:  ad-m/github-push-action@master
+      - name: Commit and push to page branch
+        run: |
+          cp ./page/404.html save/
+          cd save
+          git init
+          git checkout -b page
+          git add .
+          git commit -m "GitHub Actions Crawler ALL IN ONE at $(date +'%Y-%m-%d %H:%M:%S')"
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git page
+          
+      - name: Delete Workflow Runs
+        uses: Mattraks/delete-workflow-runs@v2
         with:
-          github_token: ${{ secrets.MY_GIT_TOKEN }}
-          branch: ${{ github.ref }}
-          force: true
+          retain_days: 30
+          keep_minimum_runs: 6

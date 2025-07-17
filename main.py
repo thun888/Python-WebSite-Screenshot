@@ -6,7 +6,7 @@ import os
 import time
 from PIL import Image
 import base64
-
+import requests
 from selenium import webdriver
 import hashlib
 
@@ -46,7 +46,13 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     # 获取页面总高度
     total_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)")
     
-
+    """
+    全屏截图模式
+    full_page = 0 拼接方式滚动截图
+    full_page = 1 拉高视窗截图模式
+    full_page = 2 不截取全屏
+    full_page = 3 设备模拟截图模式
+    """
     if full_page != 0:
         if full_page == 3:
             print("｜！！！！！｜采用设备模拟截图模式")
@@ -122,68 +128,88 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     driver.quit()
     return final_pic_file, final_hash_file
 
+if __name__ == "__main__":
+    # 读取list.json文件
+    with open("list.json", "r") as f:
+        data = json.load(f)
 
-# 读取list.json文件
-with open("list.json", "r") as f:
-    data = json.load(f)
-
-for i in data:
-    # 算出 i 的 md5 值
-    i_hash = get_dict_md5(i)
-    # 获取url
-    url = i["url"]
-    timeout = i["timeout"]
-    # 获取宽度和高度
-    width = i["width"]
-    height = i["height"]
-    real_time_out = i["real_time_out"]
-    full_page = i["full_page"]
-    # 写入文件
-    host = urlparse(url).netloc
-    host_dir = os.path.join("save", host)
-    if not os.path.exists(host_dir):
-        os.mkdir(host_dir)
-    final_pic_file, final_hash_file = get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash)
-
-    result_file = os.path.join("save", 'result.json')
-
-    # 检查文件是否存在
-    try:
-        with open(result_file, 'r') as f:
-            # 如果存在，读取数据
-            result = json.load(f)
-    except FileNotFoundError:
-        # 如果不存在，创建文件并写入数据
-        result = {}
-
-    if host not in result["sites"]:
-        result["data"].append({
-            "site": host,
-            "data":[],
-            "rules": [],
-            "lasted": "",
-            "raw_lasted": "",
+    # 导入友链信息
+    response = requests.get("https://blog.hzchu.top/data/friends.json")
+    if response.status_code != 200:
+        print("请求失败")
+        exit()
+    friends_data = response.json()["friends"]
+    # 遍历友链信息
+    for i in friends_data:
+        url = i[1]
+        data.append({
+            "url": url,
+            "timeout": 30,
+            "width": 1280,
+            "height": 720,
+            "real_time_out": 5,
+            "full_page": 2,
         })
-        result["sites"].append(host)
-    else:
-        # 找到对应的 host 是第几个索引
-        index = result["sites"].index(host)
-    result["data"][index]["lasted"] = final_hash_file
-    result["data"][index]["raw_lasted"] = final_pic_file
 
-    if i_hash not in result["data"][index]["rules"]:
-        result["data"][index]["data"].append({
-            "data": [final_pic_file],
-            "lasted": final_hash_file,
-            "details": i,
-            "rule": i_hash,
-        })
-        result["data"][index]["rules"].append(i_hash)
-    else:
-        _index = result["data"][index]["rules"].index(i_hash)
-        result["data"][index]["data"][_index]["data"].append(final_pic_file)
-        result["data"][index]["data"][_index]["lasted"] = final_hash_file
 
-    # 将更新后的 result 写入文件
-    with open(result_file, 'w') as f:
-        json.dump(result, f, indent=4)
+
+    for i in data:
+        # 算出 i 的 md5 值
+        i_hash = get_dict_md5(i)
+        # 获取url
+        url = i["url"]
+        timeout = i["timeout"]
+        # 获取宽度和高度
+        width = i["width"]
+        height = i["height"]
+        real_time_out = i["real_time_out"]
+        full_page = i["full_page"]
+        # 写入文件
+        host = urlparse(url).netloc
+        host_dir = os.path.join("save", host)
+        if not os.path.exists(host_dir):
+            os.mkdir(host_dir)
+        final_pic_file, final_hash_file = get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash)
+
+        # result_file = os.path.join("save", 'result.json')
+
+        # # 检查文件是否存在
+        # try:
+        #     with open(result_file, 'r') as f:
+        #         # 如果存在，读取数据
+        #         result = json.load(f)
+        # except FileNotFoundError:
+        #     # 如果不存在，创建文件并写入数据
+        #     result = {}
+
+        # if host not in result["sites"]:
+        #     result["data"].append({
+        #         "site": host,
+        #         "data":[],
+        #         "rules": [],
+        #         "lasted": "",
+        #         "raw_lasted": "",
+        #     })
+        #     result["sites"].append(host)
+        # else:
+        #     # 找到对应的 host 是第几个索引
+        #     index = result["sites"].index(host)
+        # result["data"][index]["lasted"] = final_hash_file
+        # result["data"][index]["raw_lasted"] = final_pic_file
+
+        # if i_hash not in result["data"][index]["rules"]:
+        #     result["data"][index]["data"].append({
+        #         "data": [final_pic_file],
+        #         "lasted": final_hash_file,
+        #         "details": i,
+        #         "rule": i_hash,
+        #     })
+        #     result["data"][index]["rules"].append(i_hash)
+        # else:
+        #     _index = result["data"][index]["rules"].index(i_hash)
+        #     result["data"][index]["data"][_index]["data"].append(final_pic_file)
+        #     result["data"][index]["data"][_index]["lasted"] = final_hash_file
+
+        # # 将更新后的 result 写入文件
+        # with open(result_file, 'w') as f:
+        #     json.dump(result, f, indent=4)
