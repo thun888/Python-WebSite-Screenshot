@@ -23,7 +23,7 @@ def get_dict_md5(d):
 
 
 
-def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash):
+def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page):
     print("正在初始化浏览器")
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 使用新版 headless 模式
@@ -34,6 +34,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
+
+    # 添加139px的UI高度
+    height += 139 
 
     try:
         print("正在设置窗口大小：", url)
@@ -61,6 +64,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
         """)
 
         if full_page != 0:
+            # 3
             if full_page == 3:
                 print("｜！！！！！｜采用设备模拟截图模式")
                 driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
@@ -76,18 +80,19 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 with open(final_lastest_file, 'wb') as f:
                     f.write(img_data)
                 return final_pic_file, final_lastest_file
-
+            # 1
             if full_page == 1:
                 print("｜！！！！！｜采用拉高视窗截图模式")
                 driver.set_window_size(width, total_height)
                 driver.execute_script(f"window.scrollTo(0, {total_height});")
             else:
+            # 2    
                 print("｜！！！！！｜不进行任何滚动，直接截图")
-
-            driver.save_screenshot(final_pic_file)
+            # 2
+            # driver.save_screenshot(final_pic_file)
             driver.save_screenshot(final_lastest_file)
             return final_pic_file, final_lastest_file
-
+        # 0
         print("｜！！！！！｜采用滚动截图模式")
         scrolled_height = 0
         next_scrolled_height = 0
@@ -143,6 +148,7 @@ if __name__ == "__main__":
 
     # 导入友链信息
     try:
+        print("正在获取友链信息")
         response = requests.get("https://blog.hzchu.top/data/friends.json")
         if response.status_code != 200:
             print("请求失败")
@@ -165,7 +171,7 @@ if __name__ == "__main__":
     for i in data:
         print("开始截图：", i["url"])
         # 算出 i 的 md5 值
-        i_hash = get_dict_md5(i)
+        # i_hash = get_dict_md5(i)
         # 获取url
         url = i["url"]
         timeout = i["timeout"]
@@ -179,4 +185,4 @@ if __name__ == "__main__":
         host_dir = os.path.join("save", host)
         if not os.path.exists(host_dir):
             os.mkdir(host_dir)
-        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, i_hash)
+        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page)
