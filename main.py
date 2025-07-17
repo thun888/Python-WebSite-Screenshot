@@ -159,8 +159,8 @@ if __name__ == "__main__":
             data.append({
                 "url": url,
                 "timeout": 30,
-                "width": 1280,
-                "height": 720,
+                "width": 1050,
+                "height": 700,
                 "real_time_out": 10,
                 "full_page": 2,
             })
