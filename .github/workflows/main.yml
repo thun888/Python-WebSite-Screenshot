@@ -76,7 +76,7 @@ jobs:
         run: pip install -r ./requirements.txt
 
       - name: 'Get screenshot'
-        run: python ./main.py
+        run: python  -u main.py
 
       # - name: 'DELETE DAYDEL FILES'
         # run: python ./del.py

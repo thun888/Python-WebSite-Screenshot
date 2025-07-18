@@ -16,14 +16,5 @@
     "width": 1280,
     "daydel": 30,
     "full_page": 2
-  },
-  {
-    "url": "https://www.flyalready.com",
-    "timeout": 10,
-    "real_time_out": 5,
-    "height": 1080,
-    "width": 1920,
-    "daydel": 30,
-    "full_page": 2
   }
 ]

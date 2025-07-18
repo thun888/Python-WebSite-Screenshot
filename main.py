@@ -13,7 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-
+import shutil
 def get_dict_md5(d):
     h = hashlib.md5()
     for key, value in d.items():
@@ -38,6 +38,8 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     # 添加139px的UI高度
     height += 139 
 
+    final_lastest_file = os.path.join(host_dir, "lastest.png")
+
     try:
         print("正在设置窗口大小：", url)
         driver.set_window_size(width, height)
@@ -51,7 +53,6 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
         now_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
         final_pic_file = os.path.join(host_dir, f"{now_time}.png")
-        final_lastest_file = os.path.join(host_dir, "lastest.png")
 
         total_height = driver.execute_script("""
             return Math.max(
@@ -135,7 +136,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     
     except Exception as e:
         print(f"发生错误: {e}")
-        return None, None
+        # 复制page/404.png到final_lastest_file
+        shutil.copy(os.path.join("page", "404.png"), final_lastest_file)
+        return None, final_lastest_file
 
     finally:
         driver.quit()
@@ -146,27 +149,27 @@ if __name__ == "__main__":
     with open("list.json", "r") as f:
         data = json.load(f)
 
-    # # 导入友链信息
-    # try:
-    #     print("正在获取友链信息")
-    #     response = requests.get("https://blog.hzchu.top/data/friends.json")
-    #     if response.status_code != 200:
-    #         print("请求失败")
-    #     friends_data = response.json()["friends"]
-    #     # 遍历友链信息
-    #     for i in friends_data:
-    #         url = i[1]
-    #         data.append({
-    #             "url": url,
-    #             "timeout": 30,
-    #             "width": 1050,
-    #             "height": 700,
-    #             "real_time_out": 10,
-    #             "full_page": 2,
-    #         })
+    # 导入友链信息
+    try:
+        print("正在获取友链信息")
+        response = requests.get("https://blog.hzchu.top/data/friends.json")
+        if response.status_code != 200:
+            print("请求失败")
+        friends_data = response.json()["friends"]
+        # 遍历友链信息
+        for i in friends_data:
+            url = i[1]
+            data.append({
+                "url": url,
+                "timeout": 30,
+                "width": 1050,
+                "height": 700,
+                "real_time_out": 10,
+                "full_page": 2,
+            })
 
-    # except Exception as e:
-    #     print(f"发生错误: {e}")
+    except Exception as e:
+        print(f"发生错误: {e}")
 
     for i in data:
         print("开始截图：", i["url"])
