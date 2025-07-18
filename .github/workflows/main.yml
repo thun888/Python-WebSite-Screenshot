@@ -83,10 +83,15 @@ jobs:
 
       # - name: 'RELOAD DAYDEL FILES'
         # run: python ./reload.py
-         
+      - name: 'Artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          name: save
+          path: save
+
       - name: Commit and push to page branch
         run: |
-          cp -r ./page/ save/
+          cp -r ./page/* save/
           cd save
           git init
           git config user.name "github-actions[bot]"

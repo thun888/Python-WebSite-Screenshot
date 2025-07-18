@@ -146,27 +146,27 @@ if __name__ == "__main__":
     with open("list.json", "r") as f:
         data = json.load(f)
 
-    # 导入友链信息
-    try:
-        print("正在获取友链信息")
-        response = requests.get("https://blog.hzchu.top/data/friends.json")
-        if response.status_code != 200:
-            print("请求失败")
-        friends_data = response.json()["friends"]
-        # 遍历友链信息
-        for i in friends_data:
-            url = i[1]
-            data.append({
-                "url": url,
-                "timeout": 30,
-                "width": 1050,
-                "height": 700,
-                "real_time_out": 10,
-                "full_page": 2,
-            })
+    # # 导入友链信息
+    # try:
+    #     print("正在获取友链信息")
+    #     response = requests.get("https://blog.hzchu.top/data/friends.json")
+    #     if response.status_code != 200:
+    #         print("请求失败")
+    #     friends_data = response.json()["friends"]
+    #     # 遍历友链信息
+    #     for i in friends_data:
+    #         url = i[1]
+    #         data.append({
+    #             "url": url,
+    #             "timeout": 30,
+    #             "width": 1050,
+    #             "height": 700,
+    #             "real_time_out": 10,
+    #             "full_page": 2,
+    #         })
 
-    except Exception as e:
-        print(f"发生错误: {e}")
+    # except Exception as e:
+    #     print(f"发生错误: {e}")
 
     for i in data:
         print("开始截图：", i["url"])
