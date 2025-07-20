@@ -1,0 +1,19 @@
+list:
+  - url: https://www.bilibili.com
+    timeout: 10
+    real_time_out: 5
+    height: 1080
+    width: 1920
+    full_page: 2
+  - url: https://blog.hzchu.top
+    timeout: 10
+    real_time_out: 5
+    height: 720
+    width: 1280
+    full_page: 2
+
+host:
+  - domain: blog.mc-sep.top
+    ipaddr: 35.212.202.85
+  - domain: www.linyunlink.top
+    ipaddr: 66.33.60.34

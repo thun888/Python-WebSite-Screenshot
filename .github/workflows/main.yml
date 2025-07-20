@@ -75,6 +75,9 @@ jobs:
       - name: 'Install requirements'
         run: pip install -r ./requirements.txt
 
+      - name: 'Write hosts'
+        run: sudo python ./writehost.py
+
       - name: 'Get screenshot'
         run: python  -u main.py
 

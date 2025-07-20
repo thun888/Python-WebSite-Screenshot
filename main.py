@@ -14,6 +14,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import shutil
+import yaml
+
 def get_dict_md5(d):
     h = hashlib.md5()
     for key, value in d.items():
@@ -137,7 +139,15 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     except Exception as e:
         print(f"发生错误: {e}")
         # 复制page/404.png到final_lastest_file
-        shutil.copy(os.path.join("page", "404.png"), final_lastest_file)
+        # 尝试通过thum.io
+        try:
+            response = requests.get(f"https://image.thum.io/get/width/1280/crop/720/{url}")
+            if response.status_code == 200:
+                with open(final_lastest_file, 'wb') as f:
+                    f.write(response.content)
+        except Exception as e:
+            print(f"通过thum.io失败，使用占位符，错误信息: {e}")
+            shutil.copy(os.path.join("page", "404.png"), final_lastest_file)
         return None, final_lastest_file
 
     finally:
@@ -145,9 +155,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
 
 if __name__ == "__main__":
-    # 读取list.json文件
-    with open("list.json", "r") as f:
-        data = json.load(f)
+    # 读取配置文件
+    with open("config.yaml", "r") as f:
+        data = yaml.load(f)["list"]
 
     # 导入友链信息
     try:
