@@ -15,5 +15,3 @@ list:
 host:
   - domain: blog.mc-sep.top
     ipaddr: 35.212.202.85
-  - domain: www.linyunlink.top
-    ipaddr: 66.33.60.34

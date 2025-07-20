@@ -26,7 +26,7 @@ def get_dict_md5(d):
 
 
 def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page):
-    print("正在初始化浏览器")
+    print("│   ├─ 正在初始化浏览器")
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 使用新版 headless 模式
     chrome_options.add_argument('--no-sandbox')
@@ -43,11 +43,11 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     final_lastest_file = os.path.join(host_dir, "lastest.png")
 
     try:
-        print("正在设置窗口大小：", url)
+        print("│   ├─ 正在设置窗口大小：", url)
         driver.set_window_size(width, height)
         driver.get(url)
 
-        print("等待网页加载")
+        print("│   ├─ 等待网页加载")
         WebDriverWait(driver, timeout).until(
             EC.presence_of_element_located((By.TAG_NAME, 'body'))
         )
@@ -68,76 +68,77 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
         if full_page != 0:
             # 3
-            if full_page == 3:
-                print("｜！！！！！｜采用设备模拟截图模式")
-                driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
-                    'mobile': False,
-                    'width': width,
-                    'height': total_height,
-                    'deviceScaleFactor': 1
-                })
-                res = driver.execute_cdp_cmd('Page.captureScreenshot', {'fromSurface': True})
-                img_data = base64.b64decode(res['data'])
-                # with open(final_pic_file, 'wb') as f:
-                #     f.write(img_data)
-                with open(final_lastest_file, 'wb') as f:
-                    f.write(img_data)
-                return final_pic_file, final_lastest_file
+            # if full_page == 3:
+            #     print("│   └─ 采用设备模拟截图模式")
+            #     driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
+            #         'mobile': False,
+            #         'width': width,
+            #         'height': total_height,
+            #         'deviceScaleFactor': 1
+            #     })
+            #     res = driver.execute_cdp_cmd('Page.captureScreenshot', {'fromSurface': True})
+            #     img_data = base64.b64decode(res['data'])
+            #     # with open(final_pic_file, 'wb') as f:
+            #     #     f.write(img_data)
+            #     with open(final_lastest_file, 'wb') as f:
+            #         f.write(img_data)
+            #     return final_pic_file, final_lastest_file
             # 1
             if full_page == 1:
-                print("｜！！！！！｜采用拉高视窗截图模式")
+                print("│   └─ 采用拉高视窗截图模式")
                 driver.set_window_size(width, total_height)
                 driver.execute_script(f"window.scrollTo(0, {total_height});")
             else:
             # 2    
-                print("｜！！！！！｜不进行任何滚动，直接截图")
+                print("│   └─ 不进行任何滚动，直接截图")
             # 2
             # driver.save_screenshot(final_pic_file)
             driver.save_screenshot(final_lastest_file)
             return final_pic_file, final_lastest_file
+       
         # 0
-        print("｜！！！！！｜采用滚动截图模式")
-        scrolled_height = 0
-        next_scrolled_height = 0
-        image_path_list = []
+        # print("│   └─ 采用滚动截图模式")
+        # scrolled_height = 0
+        # next_scrolled_height = 0
+        # image_path_list = []
 
-        print("页面总高度：", total_height)
-        page = 1
-        while next_scrolled_height < total_height:
-            driver.execute_script(f"window.scrollTo(0, {next_scrolled_height});")
-            next_scrolled_height += height
-            if total_height - scrolled_height < height:
-                next_scrolled_height = total_height
-            print(f"正在截图 [{page}]：{scrolled_height} - {next_scrolled_height}")
-            time.sleep(real_time_out)
+        # print("页面总高度：", total_height)
+        # page = 1
+        # while next_scrolled_height < total_height:
+        #     driver.execute_script(f"window.scrollTo(0, {next_scrolled_height});")
+        #     next_scrolled_height += height
+        #     if total_height - scrolled_height < height:
+        #         next_scrolled_height = total_height
+        #     print(f"正在截图 [{page}]：{scrolled_height} - {next_scrolled_height}")
+        #     time.sleep(real_time_out)
 
-            pic_file = os.path.join(host_dir, f"{now_time}|{scrolled_height}_{next_scrolled_height}.png")
-            driver.save_screenshot(pic_file)
-            image_path_list.append(pic_file)
-            scrolled_height += height
-            page += 1
+        #     pic_file = os.path.join(host_dir, f"{now_time}|{scrolled_height}_{next_scrolled_height}.png")
+        #     driver.save_screenshot(pic_file)
+        #     image_path_list.append(pic_file)
+        #     scrolled_height += height
+        #     page += 1
 
-        # 合并截图
-        images = [Image.open(p) for p in image_path_list]
-        for i in range(len(images)):
-            if i == len(images) - 1:
-                overlap = scrolled_height - total_height
-                if overlap > 0:
-                    images[i] = images[i].crop((0, overlap, images[i].width, height))
-            else:
-                images[i] = images[i].crop((0, 0, images[i].width, height))
+        # # 合并截图
+        # images = [Image.open(p) for p in image_path_list]
+        # for i in range(len(images)):
+        #     if i == len(images) - 1:
+        #         overlap = scrolled_height - total_height
+        #         if overlap > 0:
+        #             images[i] = images[i].crop((0, overlap, images[i].width, height))
+        #     else:
+        #         images[i] = images[i].crop((0, 0, images[i].width, height))
 
-        stitched_image = Image.new("RGB", (width, total_height))
-        for i, img in enumerate(images):
-            stitched_image.paste(img, (0, i * height))
+        # stitched_image = Image.new("RGB", (width, total_height))
+        # for i, img in enumerate(images):
+        #     stitched_image.paste(img, (0, i * height))
 
-        stitched_image.save(final_pic_file)
-        stitched_image.save(final_lastest_file)
-        print("截图成功")
-        return final_pic_file, final_lastest_file
+        # stitched_image.save(final_pic_file)
+        # stitched_image.save(final_lastest_file)
+        # print("截图成功")
+        # return final_pic_file, final_lastest_file
     
     except Exception as e:
-        print(f"发生错误: {e}")
+        print(f"│   ├─ 发生错误: {e}")
         # 复制page/404.png到final_lastest_file
         # 尝试通过thum.io
         try:
@@ -145,8 +146,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             if response.status_code == 200:
                 with open(final_lastest_file, 'wb') as f:
                     f.write(response.content)
+                print("│   └─ 通过thum.io获取成功")
         except Exception as e:
-            print(f"通过thum.io失败，使用占位符，错误信息: {e}")
+            print(f"│   └─ 通过thum.io获取失败，使用占位符，错误信息: {e}")
             shutil.copy(os.path.join("page", "404.png"), final_lastest_file)
         return None, final_lastest_file
 
@@ -157,10 +159,11 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 if __name__ == "__main__":
     # 读取配置文件
     with open("config.yaml", "r") as f:
-        data = yaml.load(f)["list"]
+        data = yaml.safe_load(f)["list"]
 
     # 导入友链信息
     try:
+        # print("------------------------------")
         print("正在获取友链信息")
         response = requests.get("https://blog.hzchu.top/data/friends.json")
         if response.status_code != 200:
@@ -182,7 +185,7 @@ if __name__ == "__main__":
         print(f"发生错误: {e}")
 
     for i in data:
-        print("开始截图：", i["url"])
+        print("├─ 开始截图：", i["url"])
         # 算出 i 的 md5 值
         # i_hash = get_dict_md5(i)
         # 获取url

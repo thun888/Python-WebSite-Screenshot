@@ -3,7 +3,7 @@ import sys
 
 
 with open("config.yaml", "r") as f:
-    cfg = yaml.load(f)
+    cfg = yaml.safe_load(f)
 
 hosts = cfg.get("host", [])
 if not isinstance(hosts, list):
