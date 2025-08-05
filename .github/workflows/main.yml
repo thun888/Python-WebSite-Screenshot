@@ -19,7 +19,6 @@ jobs:
   screenshot:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -105,7 +104,7 @@ jobs:
           git checkout -b page
           git add .
           git commit -m "GitHub Actions Crawler ALL IN ONE at $(date +'%Y-%m-%d %H:%M:%S')"
-          git push --force https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/${{ github.repository }}.git page
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git page
           
       - name: Delete Workflow Runs
         uses: Mattraks/delete-workflow-runs@v2
