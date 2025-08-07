@@ -35,6 +35,7 @@ jobs:
       - name: Install Chinese Support
         run: |
           git pull
+          sudo apt-get update
           sudo apt-get install language-pack-zh-han*
           sudo apt-get install ttf-mscorefonts-installer
           sudo apt-get install fontconfig
