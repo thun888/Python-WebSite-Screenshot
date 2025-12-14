@@ -25,7 +25,7 @@ def get_dict_md5(d):
 
 
 
-def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page):
+def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list):
     print("│   ├─ 正在初始化浏览器")
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 使用新版 headless 模式
@@ -140,6 +140,19 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
     except Exception as e:
         print(f"│   ├─ 发生错误: {e}")
         # 复制page/404.png到final_lastest_file
+
+        # 检查是否在replace_list中
+        for item in replace_list:
+            if item["url"] == url:
+                replace_image_path = os.path.join("page", item["image"])
+                if os.path.exists(replace_image_path):
+                    shutil.copy(replace_image_path, final_lastest_file)
+                    print("│   └─ 使用自定义替换图片获取成功")
+                    return None, final_lastest_file
+                else:
+                    print("│   └─ 自定义替换图片不存在，继续尝试其他方法")
+
+
         # 尝试通过thum.io
         try:
             response = requests.get(f"https://image.thum.io/get/width/1280/crop/720/{url}")
@@ -159,8 +172,9 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 if __name__ == "__main__":
     # 读取配置文件
     with open("config.yaml", "r") as f:
-        data = yaml.safe_load(f)["list"]
-
+        config = yaml.safe_load(f)
+        data = config["list"]
+        replace_list = config.get("replace", [])
     # 导入友链信息
     try:
         # print("------------------------------")
@@ -201,4 +215,4 @@ if __name__ == "__main__":
         host_dir = os.path.join("save", host)
         if not os.path.exists(host_dir):
             os.mkdir(host_dir)
-        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page)
+        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list)

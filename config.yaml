@@ -2,16 +2,24 @@ list:
   - url: https://www.bilibili.com
     timeout: 10
     real_time_out: 5
-    height: 1080
-    width: 1920
+    height: 700
+    width: 1050
     full_page: 2
   - url: https://blog.hzchu.top
     timeout: 10
     real_time_out: 5
-    height: 720
-    width: 1280
+    height: 700
+    width: 1050
     full_page: 2
 
 host:
   - domain: blog.mc-sep.top
     ipaddr: 35.212.202.85
+
+replace:
+  - url: https://blog.eurekac.cn/
+    image: blog-eurekac-cn.png
+  - url: https://blog.kfdzcoffee.cn
+    image: blog-kfdzcoffee-cn.png
+  - url: https://blog.hanta2011.top/
+    image: blog-hanta2011-top.png
