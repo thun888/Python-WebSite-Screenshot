@@ -26,6 +26,20 @@ def get_dict_md5(d):
 
 
 def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list):
+
+    final_lastest_file = os.path.join(host_dir, "lastest.png")
+
+    # 检查是否在replace_list中
+    for item in replace_list:
+        if item["url"] == url and item.get("force", False):
+            replace_image_path = os.path.join("images", item["image"])
+            if os.path.exists(replace_image_path):
+                shutil.copy(replace_image_path, final_lastest_file)
+                print("│   └─ 使用自定义替换图片获取成功（Force）")
+                return None, final_lastest_file
+            else:
+                print("│   └─ 自定义替换图片不存在，继续尝试其他方法")
+
     print("│   ├─ 正在初始化浏览器")
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 使用新版 headless 模式
@@ -39,8 +53,6 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
     # 添加139px的UI高度
     height += 139 
-
-    final_lastest_file = os.path.join(host_dir, "lastest.png")
 
     try:
         print("│   ├─ 正在设置窗口大小：", url)
@@ -144,7 +156,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
         # 检查是否在replace_list中
         for item in replace_list:
             if item["url"] == url:
-                replace_image_path = os.path.join("page", item["image"])
+                replace_image_path = os.path.join("images", item["image"])
                 if os.path.exists(replace_image_path):
                     shutil.copy(replace_image_path, final_lastest_file)
                     print("│   └─ 使用自定义替换图片获取成功")

@@ -19,7 +19,10 @@ host:
 replace:
   - url: https://blog.eurekac.cn/
     image: blog-eurekac-cn.png
+    force: true
   - url: https://blog.kfdzcoffee.cn
     image: blog-kfdzcoffee-cn.png
+    force: true
   - url: https://blog.hanta2011.top/
     image: blog-hanta2011-top.png
+    force: true
