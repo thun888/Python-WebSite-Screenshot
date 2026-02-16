@@ -4,3 +4,4 @@
 *.pyc
 *.scale
 *.dir
+.vscode/

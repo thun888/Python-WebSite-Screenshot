@@ -26,3 +26,9 @@ replace:
   - url: https://blog.hanta2011.top/
     image: blog-hanta2011-top.png
     force: true
+  - url: https://www.zzzzhi.com/
+    image: www-zzzzhi-com.png
+    force: true
+  - url: https://blog.mc-sep.top/
+    image: blog-mc-sep-top.png
+    force: true

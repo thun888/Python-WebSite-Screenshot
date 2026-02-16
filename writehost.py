@@ -7,8 +7,8 @@ with open("config.yaml", "r") as f:
 
 hosts = cfg.get("host", [])
 if not isinstance(hosts, list):
-    print("config.yaml 中的 host 字段不是列表，退出")
-    sys.exit(1)
+    print("config.yaml 中的 host 字段不是列表，跳过更新 /etc/hosts")
+    sys.exit(0)
 
 lines = []
 for entry in hosts:
