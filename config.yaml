@@ -13,8 +13,8 @@ list:
     full_page: 2
 
 host:
-  - domain: blog.mc-sep.top
-    ipaddr: 35.212.202.85
+  # - domain: blog.mc-sep.top
+  #   ipaddr: 35.212.202.85
 
 replace:
   - url: https://blog.eurekac.cn/
