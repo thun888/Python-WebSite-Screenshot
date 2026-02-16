@@ -31,7 +31,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
 
     # 检查是否在replace_list中
     for item in replace_list:
-        if item["url"] == url and item.get("force", False):
+        if (item["url"] == url or item["url"].startswith(url)) and item.get("force", False):
             replace_image_path = os.path.join("images", item["image"])
             if os.path.exists(replace_image_path):
                 shutil.copy(replace_image_path, final_lastest_file)
