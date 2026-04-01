@@ -63,17 +63,23 @@ jobs:
           sudo mkfontdir
           sudo fc-cache -fv
 
-      - name: Install ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}') \
-            && echo "CHROME_VERSION: $CHROME_VERSION" \
-            && curl --silent --show-error --location --fail --retry 3 --output /tmp/chromedriver_linux64.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" \
-            && cd /tmp \
-            && unzip chromedriver_linux64.zip \
-            && rm -rf chromedriver_linux64.zip \
-            && sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
-            && sudo chmod +x /usr/local/bin/chromedriver \
-            && chromedriver --version
+      # - name: Install ChromeDriver
+      #   run: |
+      #     CHROME_VERSION=$(google-chrome --version | awk '{print $3}') \
+      #       && echo "CHROME_VERSION: $CHROME_VERSION" \
+      #       && curl --silent --show-error --location --fail --retry 3 --output /tmp/chromedriver_linux64.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" \
+      #       && cd /tmp \
+      #       && unzip chromedriver_linux64.zip \
+      #       && rm -rf chromedriver_linux64.zip \
+      #       && sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
+      #       && sudo chmod +x /usr/local/bin/chromedriver \
+      #       && chromedriver --version
+      
+      - name: Install Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v2
+        with:
+          # chrome-version: 120
+          install-chromedriver: true
       
       - name: 'Install requirements'
         run: |
