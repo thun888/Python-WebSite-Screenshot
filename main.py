@@ -23,7 +23,7 @@ def get_dict_md5(d):
         h.update(str(value).encode('utf-8'))
     return h.hexdigest()
 
-result = []
+results = []
 
 def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list):
 
@@ -37,7 +37,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 shutil.copy(replace_image_path, final_lastest_file)
                 print("│   └─ 使用自定义替换图片获取成功（Force）")
 
-                result.append({
+                results.append({
                     "url": url,
                     "status": "success",
                     "method": "custom_replace_force",
@@ -116,7 +116,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             # driver.save_screenshot(final_pic_file)
             driver.save_screenshot(final_lastest_file)
 
-            result.append({
+            results.append({
                 "url": url,
                 "status": "success",
                 "method": "direct_screenshot",
@@ -178,7 +178,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 if os.path.exists(replace_image_path):
                     shutil.copy(replace_image_path, final_lastest_file)
 
-                    result.append({
+                    results.append({
                         "url": url,
                         "status": "error",
                         "method": "custom_replace",
@@ -199,7 +199,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 with open(final_lastest_file, 'wb') as f:
                     f.write(response.content)
                     
-                result.append({
+                results.append({
                     "url": url,
                     "status": "error",
                     "method": "thum.io",
@@ -210,7 +210,7 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 print("│   └─ 通过thum.io获取成功")
         except Exception as e:
             print(f"│   └─ 通过thum.io获取失败，使用占位符，错误信息: {e}")
-            result.append({
+            results.append({
                 "url": url,
                 "status": "error",
                 "method": "placeholder",
@@ -273,5 +273,5 @@ if __name__ == "__main__":
         get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list)
     
     # 输出结果
-    with open("result.json", "w") as f:
-        json.dump(result, f, indent=4, ensure_ascii=False)
+    with open("results.json", "w") as f:
+        json.dump(results, f, indent=4, ensure_ascii=False)
