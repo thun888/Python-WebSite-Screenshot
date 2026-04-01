@@ -23,7 +23,7 @@ def get_dict_md5(d):
         h.update(str(value).encode('utf-8'))
     return h.hexdigest()
 
-
+result = []
 
 def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list):
 
@@ -36,6 +36,15 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             if os.path.exists(replace_image_path):
                 shutil.copy(replace_image_path, final_lastest_file)
                 print("│   └─ 使用自定义替换图片获取成功（Force）")
+
+                result.append({
+                    "url": url,
+                    "status": "success",
+                    "method": "custom_replace_force",
+                    "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                    "msg": ""
+                })
+
                 return None, final_lastest_file
             else:
                 print("│   └─ 自定义替换图片不存在，继续尝试其他方法")
@@ -106,6 +115,15 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             # 2
             # driver.save_screenshot(final_pic_file)
             driver.save_screenshot(final_lastest_file)
+
+            result.append({
+                "url": url,
+                "status": "success",
+                "method": "direct_screenshot",
+                "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                "msg": ""
+            })
+
             return final_pic_file, final_lastest_file
        
         # 0
@@ -159,6 +177,15 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
                 replace_image_path = os.path.join("images", item["image"])
                 if os.path.exists(replace_image_path):
                     shutil.copy(replace_image_path, final_lastest_file)
+
+                    result.append({
+                        "url": url,
+                        "status": "error",
+                        "method": "custom_replace",
+                        "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                        "msg": str(e)
+                    })
+                    
                     print("│   └─ 使用自定义替换图片获取成功")
                     return None, final_lastest_file
                 else:
@@ -171,9 +198,25 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             if response.status_code == 200:
                 with open(final_lastest_file, 'wb') as f:
                     f.write(response.content)
+                    
+                result.append({
+                    "url": url,
+                    "status": "error",
+                    "method": "thum.io",
+                    "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                    "msg": str(e)
+                })
+
                 print("│   └─ 通过thum.io获取成功")
         except Exception as e:
             print(f"│   └─ 通过thum.io获取失败，使用占位符，错误信息: {e}")
+            result.append({
+                "url": url,
+                "status": "error",
+                "method": "placeholder",
+                "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                "msg": str(e)
+            })
             shutil.copy(os.path.join("page", "404.png"), final_lastest_file)
         return None, final_lastest_file
 
@@ -228,3 +271,7 @@ if __name__ == "__main__":
         if not os.path.exists(host_dir):
             os.mkdir(host_dir)
         get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list)
+    
+    # 输出结果
+    with open("result.json", "w") as f:
+        json.dump(result, f, indent=4, ensure_ascii=False)

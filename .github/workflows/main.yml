@@ -106,6 +106,7 @@ jobs:
       - name: Commit and push to page branch
         run: |
           cp -r ./page/* save/
+          cp -r ./result.json save/
           cd save
           git init
           git config user.name "github-actions[bot]"

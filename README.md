@@ -1,3 +1,11 @@
+# 说明
+
+本项目经过二次开发，修复了原版的各种依赖问题，但同时为了我需要的一些功能引入了一些dirty hack
+
+But, it works!😋
+
+
+# 原项目说明
 [![Python-WebSite-Screenshot](https://socialify.git.ci/zkeq/Python-WebSite-Screenshot/image?description=1&font=Bitter&forks=1&language=1&owner=1&pattern=Plus&stargazers=1&theme=Dark)](https://socialify.git.ci/zkeq/Python-WebSite-Screenshot/image?description=1&font=Bitter&forks=1&language=1&owner=1&pattern=Plus&stargazers=1&theme=Dark)
 
 ### 本项目是由 `Python` 写成的网站截图工具。
