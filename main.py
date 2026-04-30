@@ -25,7 +25,42 @@ def get_dict_md5(d):
 
 results = []
 
-def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list):
+
+def load_inject_css(css_path):
+    if not os.path.exists(css_path):
+        print(f"未找到注入样式文件: {css_path}")
+        return ""
+    with open(css_path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def inject_css(driver, css_text):
+    if not css_text:
+        return False
+    try:
+        driver.execute_script(
+            """
+            const cssText = arguments[0];
+            if (!cssText) return false;
+            const styleId = 'auto-inject-css';
+            let styleEl = document.getElementById(styleId);
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = styleId;
+                styleEl.type = 'text/css';
+                document.head.appendChild(styleEl);
+            }
+            styleEl.textContent = cssText;
+            return true;
+            """,
+            css_text,
+        )
+        return True
+    except Exception as e:
+        print(f"│   ├─ CSS 注入失败: {e}")
+        return False
+
+def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list, inject_css_text):
 
     final_lastest_file = os.path.join(host_dir, "lastest.png")
 
@@ -73,6 +108,8 @@ def get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_pa
             EC.presence_of_element_located((By.TAG_NAME, 'body'))
         )
         time.sleep(real_time_out)
+        if inject_css_text:
+            inject_css(driver, inject_css_text)
 
         now_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
         final_pic_file = os.path.join(host_dir, f"{now_time}.png")
@@ -230,6 +267,7 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
         data = config["list"]
         replace_list = config.get("replace", [])
+    inject_css_text = load_inject_css("inject.css")
     # 导入友链信息
     try:
         # print("------------------------------")
@@ -270,7 +308,17 @@ if __name__ == "__main__":
         host_dir = os.path.join("save", host)
         if not os.path.exists(host_dir):
             os.mkdir(host_dir)
-        get_screenshot(url, width, height, timeout, real_time_out, host_dir, full_page, replace_list)
+        get_screenshot(
+            url,
+            width,
+            height,
+            timeout,
+            real_time_out,
+            host_dir,
+            full_page,
+            replace_list,
+            inject_css_text,
+        )
     
     # 输出结果
     with open("results.json", "w") as f:
