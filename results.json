@@ -1,0 +1,198 @@
+[
+    {
+        "url": "https://www.bilibili.com",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:08:39",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.hzchu.top",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:08:47",
+        "msg": ""
+    },
+    {
+        "url": "https://qwqaq.com/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:08:58",
+        "msg": ""
+    },
+    {
+        "url": "https://www.zzzzhi.com",
+        "status": "success",
+        "method": "custom_replace_force",
+        "time": "2026-09-13 11:08:58",
+        "msg": ""
+    },
+    {
+        "url": "https://www.yt-blog.top/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:09:13",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.lvbyte.top",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:09:27",
+        "msg": ""
+    },
+    {
+        "url": "https://www.wsjj.top",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:09:46",
+        "msg": ""
+    },
+    {
+        "url": "https://www.skira.top/",
+        "status": "error",
+        "method": "thum.io",
+        "time": "2026-09-13 11:09:48",
+        "msg": "Message: unknown error: net::ERR_NAME_NOT_RESOLVED\n  (Session info: chrome=152.0.7977.82)\nStacktrace:\n#0 0x56516f58003a <unknown>\n#1 0x56516eee84c9 <unknown>\n#2 0x56516eedf2bc <unknown>\n#3 0x56516eed0431 <unknown>\n#4 0x56516eed2186 <unknown>\n#5 0x56516eed092d <unknown>\n#6 0x56516eecffb9 <unknown>\n#7 0x56516eecfbd6 <unknown>\n#8 0x56516eecd7b8 <unknown>\n#9 0x56516eece000 <unknown>\n#10 0x56516eeebf2d <unknown>\n#11 0x56516ef872bb <unknown>\n#12 0x56516ef865ad <unknown>\n#13 0x56516ef3183b <unknown>\n#14 0x56516ef32621 <unknown>\n#15 0x56516f5445f0 <unknown>\n#16 0x56516f542c6a <unknown>\n#17 0x56516f52d9f5 <unknown>\n#18 0x56516f54392a <unknown>\n#19 0x56516f516d10 <unknown>\n#20 0x56516f56b158 <unknown>\n#21 0x56516f56b2f5 <unknown>\n#22 0x56516f57ebc3 <unknown>\n#23 0x7f1c5209cb84 <unknown>\n#24 0x7f1c52129d6c <unknown>\n"
+    },
+    {
+        "url": "https://blog.wyj5211.top/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:10:01",
+        "msg": ""
+    },
+    {
+        "url": "https://dahi.icu/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:10:16",
+        "msg": ""
+    },
+    {
+        "url": "https://weirain.com/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:10:31",
+        "msg": ""
+    },
+    {
+        "url": "https://www.flyalready.com/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:10:43",
+        "msg": ""
+    },
+    {
+        "url": "https://weekdaycare.cn",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:10:56",
+        "msg": ""
+    },
+    {
+        "url": "https://lxnchan.cn",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:11:18",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.661212.xyz/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:11:35",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.kfdzcoffee.cn",
+        "status": "success",
+        "method": "custom_replace_force",
+        "time": "2026-09-13 11:11:35",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.mc-sep.top",
+        "status": "success",
+        "method": "custom_replace_force",
+        "time": "2026-09-13 11:11:35",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.linyunlink.top/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:11:48",
+        "msg": ""
+    },
+    {
+        "url": "https://www.linexic.top/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:12:00",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.hanta2011.top/",
+        "status": "success",
+        "method": "custom_replace_force",
+        "time": "2026-09-13 11:12:00",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.pljzy.top",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:12:20",
+        "msg": ""
+    },
+    {
+        "url": "https://www.xsl.im/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:12:35",
+        "msg": ""
+    },
+    {
+        "url": "https://www.hoi3vel.cn/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:13:06",
+        "msg": ""
+    },
+    {
+        "url": "https://keke.su/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:13:17",
+        "msg": ""
+    },
+    {
+        "url": "https://careful.fyi/",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:13:29",
+        "msg": ""
+    },
+    {
+        "url": "https://dusays.com",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:13:44",
+        "msg": ""
+    },
+    {
+        "url": "https://xaoxuu.com",
+        "status": "success",
+        "method": "direct_screenshot",
+        "time": "2026-09-13 11:13:57",
+        "msg": ""
+    },
+    {
+        "url": "https://blog.eurekac.cn/",
+        "status": "success",
+        "method": "custom_replace_force",
+        "time": "2026-09-13 11:13:57",
+        "msg": ""
+    }
+]
